@@ -1,0 +1,122 @@
+<START>
+dump_hal $_man->{hal_}->snipsGlobalReg()->gblDevIDReg()
+<END>
+<START>
+test_traffic -speed 1000qsgmii -size 64
+<END>
+<START>
+test_traffic -speed 1000 -size 64
+<END>
+<START>
+test_traffic -speed 10000xfi -size 1518  -l Xgamac0Internal
+<END>
+<START>
+for (0..11) { printf "PktCount Rx Tx $_ : %#d\t%#d\n", $_hal->snipsMacAddrReg()->snipsMacReg()->macPktCntReg($_)->rxPktCnt(), $_hal->snipsMacAddrReg()->snipsMacReg()->macPktCntReg($_)->txPktCnt() }
+<END>
+<START>
+show_stats -activePorts
+<END>
+<START>
+show_stats -s 0,1
+<END>
+<START>
+print "Mode " .  $_hal->snipsMacAddrReg()->snipsMacReg()->macCntrlReg()->mode()."\n";
+<END>
+<START>
+mode -s modeA
+<END>
+<START>
+mode -s 5to1_Oversubscription
+<END>
+<START>
+mode -s 2.5to1_Oversubscription
+<END>
+<START>
+cd /usr/diags/bin
+<END>
+<START>
+boot tftp://auto/tftpboot/aditipat/mortis-0724
+<END>
+<START>
+ifconfig eth0 10.10.11.117
+<END>
+<START>
+route add default gw 10.10.10.10 eth0
+<END>
+<START>
+ping 10.10.10.10
+<END>
+<START>
+##  Print PCS Status ###########################################################
+sub pcss{
+   print "\n\t\tPCS Rx/TxRst, BL, FrmLk0/1, dataVld, HBER0/1, HdrEvt0/1, InvldBlk, RxRdErr0/1, RxWrErr0/1 TxRdErr0/1, TxWrErr0/1\n";
+   for ( $k = 0 ; $k < 3; $k++) { for ( $j = 0 ; $j < 2; $j++) { for ( $i = 0 ; $i < 2; $i++) {
+      print "[$k][$j][$i] Rx"
+         .$_hal->snipsQuadSliceAddrReg($k)->snipsXQuadAddrReg($j)->snipsSliceAddrReg($i)->snipsPhyAddrReg()->snipsPhyReg()->phyCtrlReg()->pcsRxReset()."\tTx"
+         .$_hal->snipsQuadSliceAddrReg($k)->snipsXQuadAddrReg($j)->snipsSliceAddrReg($i)->snipsPhyAddrReg()->snipsPhyReg()->phyCtrlReg()->pcsTxReset()."\tBL" 
+         .$_hal->snipsQuadSliceAddrReg($k)->snipsXQuadAddrReg($j)->snipsSliceAddrReg($i)->snipsPhyAddrReg()->snipsPhyReg()->phyPCSStatusReg()->pcsBlockLock()."\tFR"
+         .$_hal->snipsQuadSliceAddrReg($k)->snipsXQuadAddrReg($j)->snipsSliceAddrReg($i)->snipsPhyAddrReg()->snipsPhyReg()->phyPCSStatusReg()->pcsFrameLockLn0()."\tFR"
+         .$_hal->snipsQuadSliceAddrReg($k)->snipsXQuadAddrReg($j)->snipsSliceAddrReg($i)->snipsPhyAddrReg()->snipsPhyReg()->phyPCSStatusReg()->pcsFrameLockLn1()."\tDV"
+         .$_hal->snipsQuadSliceAddrReg($k)->snipsXQuadAddrReg($j)->snipsSliceAddrReg($i)->snipsPhyAddrReg()->snipsPhyReg()->phyPCSStatusReg()->pcsDataValid()."\tHB"
+         .$_hal->snipsQuadSliceAddrReg($k)->snipsXQuadAddrReg($j)->snipsSliceAddrReg($i)->snipsPhyAddrReg()->snipsPhyReg()->phyPCSStatusReg()->pcsHighBERLn0()."\tHB"
+         .$_hal->snipsQuadSliceAddrReg($k)->snipsXQuadAddrReg($j)->snipsSliceAddrReg($i)->snipsPhyAddrReg()->snipsPhyReg()->phyPCSStatusReg()->pcsHighBERLn1()."\t"
+         .$_hal->snipsQuadSliceAddrReg($k)->snipsXQuadAddrReg($j)->snipsSliceAddrReg($i)->snipsPhyAddrReg()->snipsPhyReg()->phyPCSStatusReg()->pcsHeaderEvent0()."\t"
+         .$_hal->snipsQuadSliceAddrReg($k)->snipsXQuadAddrReg($j)->snipsSliceAddrReg($i)->snipsPhyAddrReg()->snipsPhyReg()->phyPCSStatusReg()->pcsHeaderEvent1()."\t"
+         .$_hal->snipsQuadSliceAddrReg($k)->snipsXQuadAddrReg($j)->snipsSliceAddrReg($i)->snipsPhyAddrReg()->snipsPhyReg()->phyPCSStatusReg()->pcsInvldBlock()."\t"
+         .$_hal->snipsQuadSliceAddrReg($k)->snipsXQuadAddrReg($j)->snipsSliceAddrReg($i)->snipsPhyAddrReg()->snipsPhyReg()->phyPCSStatusReg()->pcsRxRdErr0()."\t"
+         .$_hal->snipsQuadSliceAddrReg($k)->snipsXQuadAddrReg($j)->snipsSliceAddrReg($i)->snipsPhyAddrReg()->snipsPhyReg()->phyPCSStatusReg()->pcsRxRdErr1()."\t"
+         .$_hal->snipsQuadSliceAddrReg($k)->snipsXQuadAddrReg($j)->snipsSliceAddrReg($i)->snipsPhyAddrReg()->snipsPhyReg()->phyPCSStatusReg()->pcsRxWrErr0()."\t"
+         .$_hal->snipsQuadSliceAddrReg($k)->snipsXQuadAddrReg($j)->snipsSliceAddrReg($i)->snipsPhyAddrReg()->snipsPhyReg()->phyPCSStatusReg()->pcsRxWrErr1()."\t"
+         .$_hal->snipsQuadSliceAddrReg($k)->snipsXQuadAddrReg($j)->snipsSliceAddrReg($i)->snipsPhyAddrReg()->snipsPhyReg()->phyPCSStatusReg()->pcsTxRdErr0()."\t"
+         .$_hal->snipsQuadSliceAddrReg($k)->snipsXQuadAddrReg($j)->snipsSliceAddrReg($i)->snipsPhyAddrReg()->snipsPhyReg()->phyPCSStatusReg()->pcsTxRdErr1()."\t"
+         .$_hal->snipsQuadSliceAddrReg($k)->snipsXQuadAddrReg($j)->snipsSliceAddrReg($i)->snipsPhyAddrReg()->snipsPhyReg()->phyPCSStatusReg()->pcsTxWrErr0()."\t"
+         .$_hal->snipsQuadSliceAddrReg($k)->snipsXQuadAddrReg($j)->snipsSliceAddrReg($i)->snipsPhyAddrReg()->snipsPhyReg()->phyPCSStatusReg()->pcsTxWrErr1()."\n";
+   }}}
+}
+pcss
+<END>
+<START>
+##  Read IPG ###################################################################
+for ( $i = 0 ; $i < 12; $i++) {
+   print "IPG [$i]=\t" . $_hal->snipsMacAddrReg()->snipsMacReg()->macIpgAvgReg($i)->iIpgAvg() . "\t" . $_hal->snipsMacAddrReg()->snipsMacReg()->macIpgAvgReg($i)->oIpgAvg() . "\n";
+}
+<END>
+<START>
+dump_hal $_hal->snipsMacAddrReg()->snipsMacReg()->macStatusReg()
+<END>
+<START>
+### Run Traffic ################################################################
+/mortis3/test_traffic -t 5 -size 1518 -num auto -l off -nostop -speed 10000xfi -p 1..6
+<END>
+<START>
+rm -rf Work/Build/* Work/Sim/* Snips_2014* ; make build ;
+<END>
+<START>
+confpai 25,25/26,26/27,27/28,28/29,29/30,30/31,31/32,32
+<END>
+<START>
+xpp
+clear_errors
+clear_stats
+cd /mortis3/snips0
+clear_errors
+clear_stats
+cd /mortis3/qxs0
+clear_errors
+clear_stats
+
+<END>
+<START>
+./sd_gl23_091614
+<END>
+<START>
+https://www.google.com/about/careers/search#!t=jo&jid=58045001&
+https://www.google.com/about/careers/search#!t=jo&jid=2224001&
+https://www.google.com/about/careers/search#!t=jo&jid=20235001& 
+<END>
+<START>
+boot tftp://auto/tftpboot/aditipat/main-1008-modeA
+<END>
+<START>
+/ws/jumoe-sjc/snips/Snips_86_2014_10_09_1809
+<END>

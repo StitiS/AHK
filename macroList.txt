@@ -1,0 +1,9 @@
+<START>
++t|h|i|s|{space}|i|s|{space}|a|{space}|g|o|o|d|{space}|m|a|c|r|o|{space}|s|c|r|i|p|t|
+<END>
+<START>
+h|e|l|l|o|
+<END>
+<START>
+g|o|o|d|{space}|b|y|e|
+<END>
