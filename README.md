@@ -1,6 +1,6 @@
 AHK (AutoHotKey) Tool
 ===
-
+Do a quick search on the internet and see that AHK is a Windows-based software tool/language.  You'll need to download it in order to run my script.
 I use AHK for a number of keyboard shortcuts [most all] starting with CapsLock.  They span simple shortcuts like PageUp and arrows, all the way to a Macro recorder.  Take a look and dive in.  Good luck.
 
 
